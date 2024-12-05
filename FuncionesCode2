@@ -1,0 +1,153 @@
+#include <stdio.h>
+#include <string.h>
+
+// Definición de constantes
+#define MaxProduc 100 // Máximo número de productos permitidos en el inventario
+#define IVA 0.12      // Impuesto al valor agregado (IVA)
+
+// Variables globales para el control del inventario
+int productoacount, cantidad, i;  // Contador de productos, cantidad de un producto, índice de iteración
+char nombreProduc[100];          // Nombre del producto actual
+float precio;                    // Precio del producto actual
+int productos[100][3];           // Matriz para almacenar datos de productos: [nombre, cantidad, precio, código]
+int codigo;                      // Código único del producto actual
+
+// Función para agregar un nuevo producto al inventario
+void IngresarProducto() {
+    productoacount++; // Incrementa el contador de productos
+    i = productoacount - 1; // Define la posición del nuevo producto en el arreglo
+
+    // Verifica si se supera el límite de productos permitidos
+    if (productoacount > MaxProduc) {
+        printf("Productos del Inventario completos");
+        return;
+    }
+
+    printf("Nota: El valor del IVA se calcula automaticamente\n");
+
+    // Solicita y almacena el nombre del producto
+    printf("Ingrese el nombre del producto: ");
+    fgets(nombreProduc, sizeof(nombreProduc), stdin);
+    nombreProduc[strcspn(nombreProduc, "\n")] = '\0'; // Elimina el salto de línea
+
+    // Solicita y almacena la cantidad del producto
+    printf("Ingrese la cantidad del producto: ");
+    scanf("%d", &cantidad);
+    getchar(); // Limpia el buffer del teclado
+
+    // Solicita y almacena el código del producto
+    printf("Ingrese el codigo del producto: ");
+    scanf("%d", &codigo);
+    getchar();
+
+    // Solicita y almacena el precio del producto
+    printf("Ingrese el precio del producto: ");
+    scanf("%f", &precio);
+    getchar();
+
+    // Asigna los datos ingresados a la matriz de productos
+    for (int i = 0; i < productoacount; i++) {
+        productos[i][0] = nombreProduc[100]; // ERROR: No puedes asignar cadenas a enteros directamente
+        productos[i][1] = cantidad;         // Cantidad del producto
+        productos[i][2] = (precio * IVA) + precio; // Precio con IVA incluido
+        productos[i][3] = codigo;           // Código único
+    }
+}
+
+// Función para editar los datos de un producto en el inventario
+void editarProdu() {
+    int cambio; // Variable para seleccionar qué propiedad editar
+
+    printf("Ingrese el producto que desea editar: ");
+    fgets(nombreProduc, sizeof(nombreProduc), stdin);
+    nombreProduc[strcspn(nombreProduc, "\n")] = '\0'; // Elimina el salto de línea
+
+    // Busca el producto por nombre
+    for (i = 0; i < productoacount; i++) {
+        if (productos[i][0] == nombreProduc[100]) { // ERROR: No puedes comparar cadenas directamente
+            printf("¿Que desea cambiar del producto?\n");
+            printf("1. Nombre\n2. Cantidad\n3. Precio\n4. Codigo\n");
+            scanf("%d", &cambio);
+            getchar();
+
+            // Realiza cambios según la opción seleccionada
+            switch (cambio) {
+                case 1:
+                    printf("Nombre del producto: %s", productos[i][0]);
+                    printf("Nuevo nombre: ");
+                    fgets(nombreProduc, sizeof(nombreProduc), stdin);
+                    nombreProduc[strcspn(nombreProduc, "\n")] = '\0';
+                    productos[i][0] = nombreProduc[100]; // ERROR: No puedes asignar cadenas directamente
+                    break;
+
+                case 2:
+                    printf("Cantidad del producto: %d\n", productos[i][1]);
+                    printf("Nueva cantidad: ");
+                    scanf("%d", &cantidad);
+                    getchar();
+                    productos[i][1] = cantidad;
+                    break;
+
+                case 3:
+                    printf("Precio del producto: %.2f\n", productos[i][2]);
+                    printf("Nuevo precio: ");
+                    scanf("%f", &precio);
+                    getchar();
+                    productos[i][2] = (precio * IVA) + precio;
+                    break;
+
+                case 4:
+                    printf("Código del producto: %d\n", productos[i][3]);
+                    printf("Nuevo código: ");
+                    scanf("%d", &codigo);
+                    getchar();
+                    productos[i][3] = codigo;
+                    break;
+
+                default:
+                    printf("Opción no válida.\n");
+                    break;
+            }
+
+            printf("Producto actualizado.\n");
+            return;
+        }
+    }
+
+    printf("Producto no encontrado.\n");
+}
+
+// Función para eliminar un producto del inventario
+void EliminarProducto() {
+    char elemVacio[100] = ""; // Cadena vacía para marcar la eliminación
+
+    printf("Ingrese el nombre del producto que desea eliminar: ");
+    fgets(nombreProduc, sizeof(nombreProduc), stdin);
+    nombreProduc[strcspn(nombreProduc, "\n")] = '\0';
+
+    // Busca el producto por nombre y lo elimina
+    for (i = 0; i < productoacount; i++) {
+        if (productos[i][0] == nombreProduc[100]) { // ERROR: No puedes comparar cadenas directamente
+            productos[i][0] = elemVacio[100]; // ERROR: No puedes asignar cadenas directamente
+            productos[i][1] = elemVacio[100];
+            productos[i][2] = elemVacio[100];
+            productos[i][3] = elemVacio[100];
+        }
+    }
+
+    productoacount--; // Reduce el contador de productos
+    printf("Producto eliminado.\n");
+}
+
+// Función para listar todos los productos en el inventario
+void listaProductos() {
+    printf("  Nombre del producto  |  Cantidad  |  Precio  |  Codigo  |\n");
+
+    // Recorre la lista de productos y los imprime
+    for (i = 0; i < productoacount; i++) {
+        printf("  %s  \t", productos[i][0]); // ERROR: Almacenar cadenas en un arreglo de enteros no funciona
+        printf("  %d  ", productos[i][1]);
+        printf("  %.2f  ", productos[i][2]);
+        printf("  %d  ", productos[i][3]);
+    }
+}
