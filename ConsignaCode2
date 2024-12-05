@@ -1,0 +1,47 @@
+#include "Funciones2.h"
+
+
+int main()
+{   
+    char producto[100]; 
+    int cantidadP, eleccion;
+    float precio;
+    SN:
+    printf("----------------------------\n");
+    printf("¿Qué acción desea realizar sobre los productos?\n");
+    printf("1.Ingresar\n2.Editar\n3.Eliminar\n4.Listado de Productos\n");
+    printf("Acción: ");
+    scanf("%d", &eleccion);
+    getchar();      
+
+    if (eleccion < 1 ||eleccion > 4)
+    {
+        printf("----------------------------\n");
+        printf("Accion no valida\n");
+        goto SN;
+    }
+    
+    switch (eleccion)
+    {
+    case 1:
+        IngresarProducto();
+        break;
+    case 2:
+        editarProdu();
+        break;
+    case 3:
+        EliminarProducto();
+        break;
+    case 4:
+        listaProductos();
+        break;
+    default:
+        break;
+    }
+    
+    
+    
+    
+    
+    return 0;
+}
